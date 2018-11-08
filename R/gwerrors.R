@@ -62,9 +62,11 @@ gwerrors <- function (x, vars, fp, adapt = NULL, bw, kernel, longlat = NULL, dis
 
   ##NA of pixels in background grid  are excluded
   fp.mask <- !is.na(fp@data[,1])
+  fp.na <- is.na(fp@data[,1])
   fp.coord <- coordinates(fp)
   fp.mask.coord <- fp.coord[fp.mask, ]
-
+  fp.na.coord <- fp.coord[fp.na, ]
+  
   #coordiniations in all pixels (not masked yet)
   fp <- coordinates(fp)
 
@@ -159,9 +161,15 @@ gwerrors <- function (x, vars, fp, adapt = NULL, bw, kernel, longlat = NULL, dis
             )
   rownames(res.error) <- rnm
 
-  SDF <- SpatialPointsDataFrame(coords = fp.mask.coord,
-                                data = data.frame(t(res.error)),
-                                proj4string = CRS(p4s))
+  SDF_fill <- SpatialPointsDataFrame(coords = fp.mask.coord,
+                                     data = data.frame(t(res.error)),
+                                     proj4string = CRS(p4s))
+  SDF_NA <- SpatialPointsDataFrame(coords = fp.na.coord,
+                                   data = data.frame(matrix(NA,nrow=dim(fp.na.coord)[1],ncol=dim(t(res.error))[2] )),
+                                   proj4string = CRS(p4s))
+  names(SDF_NA) <- names(SDF_fill)
+  SDF <- rbind(SDF_fill, SDF_NA)
+
   if (gridded)
     gridded(SDF) <- TRUE
   else if (!is.null(Polys) && fp.missing) {
