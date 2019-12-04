@@ -143,8 +143,9 @@ gwerrors <- function (x, vars, fp, adapt = NULL, bw, kernel, longlat = NULL, dis
 
   cov.wt2_run <- function(y){
     out <- tryCatch(error_diagnostics(as.matrix(x), y) , error =function(e){
-      ans <-  c(rmse = NA, mae = NA, difference = NA, calc.pointn = NA, cor.test = NA, cor.pval = NA,
-                mse = mse, bias2 = bias2, variance = v)
+      ans <-  c(rmse = NA, mae = NA, difference = NA, calc.pointn = NA, cor.test = NA, cor.pval = NA
+                #,mse = mse, bias2 = bias2, variance = v
+                )
       return(ans)}
     )}
 
@@ -164,11 +165,15 @@ gwerrors <- function (x, vars, fp, adapt = NULL, bw, kernel, longlat = NULL, dis
   SDF_fill <- SpatialPointsDataFrame(coords = fp.mask.coord,
                                      data = data.frame(t(res.error)),
                                      proj4string = CRS(p4s))
-  SDF_NA <- SpatialPointsDataFrame(coords = fp.na.coord,
-                                   data = data.frame(matrix(NA,nrow=dim(fp.na.coord)[1],ncol=dim(t(res.error))[2] )),
-                                   proj4string = CRS(p4s))
-  names(SDF_NA) <- names(SDF_fill)
-  SDF <- rbind(SDF_fill, SDF_NA)
+  if(dim(fp.na.coord)[1]>0){
+    SDF_NA <- SpatialPointsDataFrame(coords = fp.na.coord,
+                                     data = data.frame(matrix(NA,nrow=dim(fp.na.coord)[1],ncol=dim(t(res.error))[2] )),
+                                     proj4string = CRS(p4s))
+    names(SDF_NA) <- names(SDF_fill)
+    SDF <- rbind(SDF_fill, SDF_NA)
+  } else {
+    SDF <- SDF_fill
+  }
 
   if (gridded)
     gridded(SDF) <- TRUE
