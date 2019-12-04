@@ -1,11 +1,11 @@
 Package: GWerrors
 Type: Package
-Title: Geographically Weighted Error Diagnostics
-Version: 0.1.1
+Title: Geographically Weighted Error Diagnostics for continous data
+Version: 0.1.2
 Author: Naru. Tsutsumida
 Maintainer: Naru. Tsutsumida <naru@kais.kyoto-u.ac.jp>
 Description: This package provides geographically weighted error diagnostic measures of mean signed deviation, mean absolute error, root mean squared error, and Pearson's correlation coefficient between two variables (predicted and reference values), and mante carlo permutation tests for them. Details can be found at Tsutsumida N., Rodríguez-Veiga P., Harris P., Balzter H., Comber A. Investigating Spatial Error Structures in Continuous Raster Data, accepted, International Journal of Applied Earth Observation and Geoinformation.
 License: 	GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
-Imports: sp, maptools, GWmodel
+Imports: sp, spgwr, raster, maptools, GWmodel

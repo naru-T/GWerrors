@@ -8,16 +8,16 @@ This function calculates the geographically weighted error diagnostic measures o
 }
 
 \usage{
-gwerrors(x, vars, fp, adapt = NULL, bw, kernel, longlat = NULL, distMatrix = NULL, random=FALSE)
+gwerrors(x, vara, fp, adapt = NULL, bw, kernel, longlat = NULL, distMatrix = NULL, random=FALSE)
 }
 
 \arguments{
   \item{x}{
-a Spatial*DataFrame, i.e. SpatialPointsDataFrame or SpatialPolygonsDataFrame as defined in package sp
+a Spatial*DataFrame, i.e. SpatialPointsDataFrame or SpatialPolygonsDataFrame as defined in package sp, which stores referenced validation values.
 }
 
   \item{vars}{
-a vector of variable names to be applied
+a vector of two variable names which are both prediction and validation to be applied
 
 }
 
@@ -26,12 +26,12 @@ a vector of variable names to be applied
   }
 
   \item{adapt}{
-if TRUE calculate an adaptive kernel where the bandwidth (bw) corresponds to the number of nearest neighbours (i.e. adaptive distance); default is NULL, where a fixed kernel is found (bandwidth is a fixed distance)
+a proportion value (ranged over 0 until 1) to calculate an adaptive kernel. The value is a ratio of the number nearest neighbours (i.e. adaptive distance) against the number of total fitted point found in fp. Default is NULL. If NULL, bw should be specified as non-adaptive (fixed distance) kernel.
 
 }
 
   \item{bw}{
-bandwidth used in the weighting function. if adaptive bandwidth is applied, bw should be proportional (eg, 0.2 when considering 20% nearest neighbours of the total data points). If fixed bandwidth, unit is 'km'.
+bandwidth for a fixed distance kernel used in the weighting function. 
 
 }
   \item{kernel}{

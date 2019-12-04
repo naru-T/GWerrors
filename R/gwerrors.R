@@ -40,7 +40,8 @@ gwerrors <- function (x, vars, fp, adapt = NULL, bw, kernel, longlat = NULL, dis
   if (is.integer(vars))
     vars <- names(x)[vars]
   stopifnot(is.character(vars))
-  x <- as.matrix(data[, vars])
+  x <- as.matrix(cbind(data[, vars], as.vector(data[, vars[1]] - data[, vars[2]])))
+  
   if (any(is.na(x)))
     stop("x contains NAs")
   nc <- ncol(x)
